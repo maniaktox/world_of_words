@@ -6,14 +6,20 @@ import pymorphy2
 table = PrettyTable() 
 table.field_names = ["СЛОВО", "КОЛИЧЕСТВО В ТЕКСТЕ", "% ОТ ОБЩЕГО ЧИСЛА СЛОВ"]
 table_list = []
-
-files_str = input('Введите имя одного или нескольких файлов через пробел и без расширения: ')
-list_of_files = files_str.split(' ')
-data = ''
-for file in list_of_files:
-    f = open(file + '.txt')
-    data += f.read().lower()
-
+while True:
+    try:
+        files_str = input('Введите имя одного или нескольких файлов через пробел и без расширения: ')
+        list_of_files = files_str.split(' ')
+        data = ''
+        for file in list_of_files:
+            
+            f = open(file + '.txt')
+            data += f.read().lower()
+              
+    except FileNotFoundError:
+        print('Файл не найден')
+        continue
+    break    
 words = re.sub(r'[^\w\s]', '', data)
 words = words.split()
 uniq = set(words)
