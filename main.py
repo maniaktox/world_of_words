@@ -1,3 +1,5 @@
+#!.venv/bin/python
+
 from collections import Counter
 from prettytable import PrettyTable
 import re
@@ -9,15 +11,23 @@ table_list = []
 
 while True:
     try:
-        files_str = input('Введите имя одного или нескольких файлов через пробел и без расширения: ')
+        files_str = input('Введите относительный или абсолютный путь файлов: ')
         list_of_files = files_str.split(' ')
         data = ''
         for file in list_of_files:
-            f = open(file + '.txt')
+            f = open(file)
             data += f.read().lower()
     except FileNotFoundError:
-        print('Файл не найден')
+        print('Файл не найден!')
         continue
+    except IsADirectoryError:
+        print('Ошибка! Вы ввели имя директории')
+        continue
+    except PermissionError:
+        print('Невозможно открыть файл! Нет прав доступа')
+        continue
+    except Exception:
+        print('Ошибка!')
     break    
 
 words = re.sub(r'[^\w\s]', '', data)
@@ -47,7 +57,7 @@ while True:
         
             
     except ValueError:
-        print('Вы ввели не число')  
+        print('Вы ввели не целое положительное число (без плавающей точки)')  
         continue  
 
     break
